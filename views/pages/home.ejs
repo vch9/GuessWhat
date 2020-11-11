@@ -3,6 +3,23 @@
     <script type="text/javascript" src="public/scripts/render_home.js"></script>
   </head>
   <body>
+    <div id="pregame">
+      <form id="pseudo">
+        <input type="text" value="Choose your pseudo!" id="pseudonyme"/>
+        <input type="submit" value="Submit!"/>
+      </form>
+      <script>
+        var form = document.getElementById('pseudo');
+        form.addEventListener('submit', function(e) {
+            window.sessionStorage.pseudo = document.getElementById('pseudonyme').value;
+            e.preventDefault();
+            document.location.reload(true);
+
+            // TODO: authorize only unique pseudonymes
+        });
+      </script>
+    </div>
+
     <div id="game">
       <canvas id="canvas"></canvas>
       <script>
@@ -16,5 +33,18 @@
         }, 2000);
       </script>
     </div>
+
+    <script>
+      var form = document.getElementById('pseudo');
+      var game = document.getElementById('game');
+
+      if (!window.sessionStorage.pseudo) {
+          game.style.display = "none";
+          form.style.display = "block";
+      } else {
+          game.style.display = "block";
+          form.style.display = "none";
+      }
+  </script>
   </body>
 </html>
