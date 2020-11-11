@@ -52,6 +52,9 @@ function pixelizeImage(imgData, ctx, i, max, startx, endx, starty, endy) {
 }
 
 function renderImage(path, iteration) {
+    if (iteration > 8) {
+        return;
+    }
     var width = 600;
     var height = 600;
 
@@ -80,6 +83,5 @@ function renderButton(path, iteration) {
 }
 
 function renderHome(path, iteration) {
-    renderButton(path, iteration);
     renderImage(path, iteration);
 }
