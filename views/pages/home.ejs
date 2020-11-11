@@ -22,6 +22,10 @@
 
     <div id="game">
       <canvas id="canvas"></canvas>
+      <form id="answer" onsubmit="return false">
+        <input type="text" id="answer_player"/>
+        <input type="submit" value="Answer"/>
+      </form>
       <script src="http://localhost:8080/socket.io/socket.io.js"></script>
       <script>
         const pseudo = window.sessionStorage.pseudo;
@@ -29,6 +33,16 @@
           const socket = io();
 
           socket.emit('join game', pseudo);
+
+          var answer = document.getElementById('answer');
+          answer.addEventListener('submit', function(e) {
+            var try_answer = document.getElementById('answer_player');
+            socket.emit('try answer', {
+              pseudo: pseudo,
+              answer: try_answer.value
+            });
+            try_answer.value = "";
+          });
 
           var image, solution, iteration;
           socket.on('image', function(msg) {

@@ -1,4 +1,4 @@
-const current_img = {
+let current_img = {
     image: '/public/images/god.jpg',
     solution: 'god of war',
     iteration: 1
@@ -19,17 +19,43 @@ function play(players) {
     return interval;
 }
 
+function nextImage() {
+    // TODO: this should change current_img to a new one.
+    current_img = {
+        image: '/public/images/god.jpg',
+        solution: 'god of war',
+        iteration: 1
+    };
+}
+
+function tryAnswer(players, pseudo, answer) {
+    if (answer === current_img.solution) {
+        players.forEach(player => {
+            if (player.pseudo === pseudo) {
+                player.score += 1;
+            }
+        });
+        nextImage();
+        console.log(players);
+    }
+}
+
 exports.handleEvents = function (io) {
     let players = [];
     interval = play(players);
     io.on('connection', socket => {
-        console.log('User has connected.');
-
         socket.on('join game', pseudo => {
+            console.log(pseudo + ' has joined.');
             players.push({
                 socket: socket,
-                pseudo: pseudo
+                pseudo: pseudo,
+                score: 0
             });
+        });
+
+        socket.on('try answer', msg => {
+            console.log(msg.pseudo + ' has tried: ' + msg.answer);
+            tryAnswer(players, msg.pseudo, msg.answer);
         });
     });
 }
