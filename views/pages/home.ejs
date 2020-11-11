@@ -22,15 +22,23 @@
 
     <div id="game">
       <canvas id="canvas"></canvas>
+      <script src="http://localhost:8080/socket.io/socket.io.js"></script>
       <script>
-        var path_image = '/public/images/god.jpg'
-        var iteration = 1;
-        renderHome(path_image, iteration);
+        const pseudo = window.sessionStorage.pseudo;
+        if (pseudo) {
+          const socket = io();
 
-        var interval = window.setInterval(function (){
-          iteration += 1;
-          renderHome(path_image, iteration);
-        }, 2000);
+          var image, solution, iteration;
+          socket.on('image', function(msg) {
+            image = msg.image;
+            solution = msg.solution;
+            iteration = msg.iteration;
+
+            renderHome(image, iteration);
+          });
+        }
+
+
       </script>
     </div>
 
