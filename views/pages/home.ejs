@@ -28,6 +28,8 @@
         if (pseudo) {
           const socket = io();
 
+          socket.emit('join game', pseudo);
+
           var image, solution, iteration;
           socket.on('image', function(msg) {
             image = msg.image;

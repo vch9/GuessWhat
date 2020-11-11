@@ -6,7 +6,7 @@ const current_img = {
 
 function updateClients(players){
     for(let i = 0; i < players.length; i++) {
-        players[i].emit('image', current_img);
+        players[i].socket.emit('image', current_img);
     }
 }
 
@@ -24,6 +24,12 @@ exports.handleEvents = function (io) {
     interval = play(players);
     io.on('connection', socket => {
         console.log('User has connected.');
-        players.push(socket);
+
+        socket.on('join game', pseudo => {
+            players.push({
+                socket: socket,
+                pseudo: pseudo
+            });
+        });
     });
 }
