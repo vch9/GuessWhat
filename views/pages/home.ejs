@@ -3,9 +3,13 @@
     <script type="text/javascript" src="public/scripts/render_home.js"></script>
   </head>
   <body>
-    <canvas id="canvas"></div>
-    <script>
-      renderImage('https://mdn.mozillademos.org/files/5397/rhino.jpg');
-    </script>
+    <div id="game">
+      <canvas id="canvas"></canvas>
+      <script>
+        var path_image = 'https://mdn.mozillademos.org/files/5397/rhino.jpg';
+        var iteration = 0
+        renderHome(path_image, iteration);
+      </script>
+    </div>
   </body>
 </html>
