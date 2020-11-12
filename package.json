@@ -1,0 +1,27 @@
+{
+  "name": "GuessWhat",
+  "version": "0.0.1",
+  "description": "Online image quizz",
+  "main": "index.js",
+  "scripts": {
+    "dev": "node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vch9/GuessWhat.git"
+  },
+  "keywords": [
+    "Game"
+  ],
+  "author": "",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/vch9/GuessWhat/issues"
+  },
+  "homepage": "https://github.com/vch9/GuessWhat#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0",
+    "ejs": "^3.0.2"
+  }
+}

@@ -1,0 +1,74 @@
+<html>
+  <head>
+    <script type="text/javascript" src="public/scripts/render_home.js"></script>
+  </head>
+  <body>
+    <div id="pregame">
+      <form id="pseudo">
+        <input type="text" value="Choose your pseudo!" id="pseudonyme"/>
+        <input type="submit" value="Submit!"/>
+      </form>
+      <script>
+        var form = document.getElementById('pseudo');
+        form.addEventListener('submit', function(e) {
+            window.sessionStorage.pseudo = document.getElementById('pseudonyme').value;
+            e.preventDefault();
+            document.location.reload(true);
+
+            // TODO: authorize only unique pseudonymes
+        });
+      </script>
+    </div>
+
+    <div id="game">
+      <canvas id="canvas"></canvas>
+      <form id="answer" onsubmit="return false">
+        <input type="text" id="answer_player"/>
+        <input type="submit" value="Answer"/>
+      </form>
+      <script src="socket.io/socket.io.js"></script>
+      <script>
+        const pseudo = window.sessionStorage.pseudo;
+        if (pseudo) {
+          const socket = io();
+
+          socket.emit('join game', pseudo);
+
+          var answer = document.getElementById('answer');
+          answer.addEventListener('submit', function(e) {
+            var try_answer = document.getElementById('answer_player');
+            socket.emit('try answer', {
+              pseudo: pseudo,
+              answer: try_answer.value
+            });
+            try_answer.value = "";
+          });
+
+          var image, solution, iteration;
+          socket.on('image', function(msg) {
+            image = msg.image;
+            solution = msg.solution;
+            iteration = msg.iteration;
+
+            renderHome(image, iteration);
+          });
+        }
+
+
+      </script>
+    </div>
+
+    <script>
+      var form = document.getElementById('pseudo');
+      var game = document.getElementById('game');
+
+      if (!window.sessionStorage.pseudo) {
+          game.style.display = "none";
+          form.style.display = "block";
+      } else {
+          game.style.display = "block";
+          form.style.display = "none";
+      }
+  </script>
+  </body>
+</html>
