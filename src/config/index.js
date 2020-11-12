@@ -3,6 +3,6 @@
  */
 
  module.exports = {
-    port : process.env.NODE_PORT || 3100,
+    port : process.env.NODE_PORT || 8080,
     url : 'http://localhost:8080/'
  }
