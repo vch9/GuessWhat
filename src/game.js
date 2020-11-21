@@ -4,9 +4,26 @@ let current_img = {
     iteration: 1
 };
 
-function updateClients(players){
+function updateImage(socket) {
+    socket.emit('image', current_img);
+}
+
+function updateScore(players, socket) {
+    let scores = [];
+    players.forEach(pl => {
+        scores.push({
+            pseudo: pl.pseudo,
+            score: pl.score
+        });
+    });
+    socket.emit('scores', scores);
+}
+
+function updateClients(players, f){
     for(let i = 0; i < players.length; i++) {
-        players[i].socket.emit('image', current_img);
+        const socket = players[i].socket;
+        updateImage(socket);
+        updateScore(players, socket);
     }
 }
 
@@ -33,10 +50,10 @@ function tryAnswer(players, pseudo, answer) {
         players.forEach(player => {
             if (player.pseudo === pseudo) {
                 player.score += 1;
+                updateClients(players);
             }
         });
         nextImage();
-        console.log(players);
     }
 }
 

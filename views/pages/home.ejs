@@ -26,6 +26,7 @@
         <input type="text" id="answer_player"/>
         <input type="submit" value="Answer"/>
       </form>
+      <div id="scores"></div>
       <script src="socket.io/socket.io.js"></script>
       <script>
         const pseudo = window.sessionStorage.pseudo;
@@ -50,7 +51,11 @@
             solution = msg.solution;
             iteration = msg.iteration;
 
-            renderHome(image, iteration);
+            renderImage(image, iteration);
+          });
+
+          socket.on('scores', function(msg) {
+            renderScores(msg);
           });
         }
 

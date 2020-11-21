@@ -82,6 +82,26 @@ function renderButton(path, iteration) {
     });
 }
 
+function renderScores(scores) {
+    document.getElementById("scores").innerHTML = "";
+    let table = document.createElement("table");
+    let table_body = document.createElement("tbody");
+
+    scores.forEach(row => {
+        console.log(row);
+        let tr = document.createElement('tr');
+        let td = document.createElement('td');
+
+        td.appendChild(document.createTextNode(row.pseudo + ' : ' + row.score));
+
+        tr.appendChild(td);
+        table_body.appendChild(tr);
+    });
+
+    table.appendChild(table_body);
+    document.getElementById("scores").appendChild(table);
+}
+
 function renderHome(path, iteration) {
     renderImage(path, iteration);
 }
