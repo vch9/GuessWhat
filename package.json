@@ -21,8 +21,10 @@
   },
   "homepage": "https://github.com/vch9/GuessWhat#readme",
   "dependencies": {
+    "bootstrap": "^4.5.3",
+    "ejs": "^3.0.2",
     "express": "^4.17.1",
-    "socket.io": "^2.3.0",
-    "ejs": "^3.0.2"
+    "jquery": "^3.5.1",
+    "socket.io": "^2.3.0"
   }
 }
