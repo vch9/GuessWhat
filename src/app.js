@@ -15,6 +15,7 @@ app.set('view engine', 'ejs');
 
 /* === Routing === */
 app.get('/', router.home);
+app.get('/game', router.game);
 
 /* === Export === */
 module.exports = app;

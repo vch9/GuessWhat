@@ -70,18 +70,6 @@ function renderImage(path, iteration) {
     }
 }
 
-function renderButton(path, iteration) {
-    let button = document.createElement("button");
-    button.id = "next";
-    button.innerHTML = "Next iteration";
-
-    document.getElementById("game").appendChild(button);
-    document.querySelector('#next').addEventListener("click", function() {
-        iteration += 1;
-        renderImage(path, iteration)
-    });
-}
-
 function renderScores(scores) {
     document.getElementById("scores").innerHTML = "";
     let table = document.createElement("table");
@@ -101,7 +89,47 @@ function renderScores(scores) {
     table.appendChild(table_body);
     document.getElementById("scores").appendChild(table);
 }
+function renderButton(pseudo) {
+    var answer = document.getElementById('answer');
+    answer.addEventListener('submit', function(e) {
+        var try_answer = document.getElementById('answer_player');
+        socket.emit('try answer', {
+            pseudo: pseudo,
+            answer: try_answer.value
+        });
+        try_answer.value = "";
+    });
+}
+function renderGame(pseudo, socket) {
+    if(!pseudo){
+        const url = window.location.origin;
+        window.location.href = url;
+        window.location.replace(url);
+        return;
+    }
+    renderButton(pseudo);
+    socket.emit('join game', pseudo);
 
-function renderHome(path, iteration) {
-    renderImage(path, iteration);
+    var answer = document.getElementById('answer');
+    answer.addEventListener('submit', function(e) {
+        var try_answer = document.getElementById('answer_player');
+        socket.emit('try answer', {
+        pseudo: pseudo,
+        answer: try_answer.value
+        });
+        try_answer.value = "";
+    });
+
+    var image, solution, iteration;
+    socket.on('image', function(msg) {
+        image = msg.image;
+        solution = msg.solution;
+        iteration = msg.iteration;
+
+        renderImage(image, iteration);
+    });
+
+    socket.on('scores', function(msg) {
+        renderScores(msg);
+    });
 }
