@@ -22,6 +22,10 @@
           const socket = io();
           const pseudo = window.sessionStorage.pseudo;
           renderGame(pseudo, socket);
+
+          window.addEventListener('beforeunload', function (e) {
+            socket.emit('leave game', pseudo);
+          });
         </script>
     </div>
     <div id="scores"></div>
