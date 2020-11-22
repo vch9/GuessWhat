@@ -28,7 +28,6 @@ function updateClients(players) {
 }
 
 function updateClientsF(players, f) {
-    console.log(players.length);
     for(let i = 0; i < players.length; i++) {
         const socket = players[i].socket;
         f(players, socket);
@@ -38,7 +37,9 @@ function updateClientsF(players, f) {
 function play(players) {
     var interval = setInterval(function () {
         current_img.iteration += 1;
-        updateClients(players);
+        if (current_img.iteration <= 8) {
+            updateClients(players);
+        }
     }, 2000);
 
     return interval;
@@ -95,6 +96,7 @@ exports.handleEvents = function (io) {
                 pseudo: pseudo,
                 score: 0
             });
+            updateClients(players);
         });
 
         socket.on('try answer', msg => {

@@ -52,9 +52,6 @@ function pixelizeImage(imgData, ctx, i, max, startx, endx, starty, endy) {
 }
 
 function renderImage(path, iteration) {
-    if (iteration > 8) {
-        return;
-    }
     var width = 800;
     var height = 800;
 
@@ -66,6 +63,11 @@ function renderImage(path, iteration) {
         var ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
         var imgData = ctx.getImageData(0, 0, width, height);
+
+        if (iteration > 8) {
+            return;
+        }
+
         pixelizeImage(imgData, ctx, 0, iteration, 0, width, 0, height);
     }
 }
@@ -126,10 +128,12 @@ function renderGame(pseudo, socket) {
         solution = msg.solution;
         iteration = msg.iteration;
 
+        console.log("je reçois une image");
         renderImage(image, iteration);
     });
 
     socket.on('scores', function(msg) {
+        console.log("je reçois les scores");
         renderScores(msg);
     });
 }
