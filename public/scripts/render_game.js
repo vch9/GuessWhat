@@ -55,8 +55,8 @@ function renderImage(path, iteration) {
     if (iteration > 8) {
         return;
     }
-    var width = 1200;
-    var height = 1200;
+    var width = 800;
+    var height = 800;
 
     var canvas = document.getElementById('canvas');
 
