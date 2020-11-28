@@ -54,6 +54,29 @@ function nextImage() {
     };
 }
 
+function checkPseudo(socket, players, pseudo) {
+    function is_Unique(players, pseudo) {
+        res = true;
+        players.forEach(pl => {
+            if (pl.pseudo === pseudo) {
+                res = false;
+            }
+        });
+        return res;
+    }
+    if (is_Unique(players, pseudo)) {
+        socket.emit('pseudo validation', pseudo);
+        return;
+    }
+
+    let suffix = 1;
+    while(!is_Unique(players, pseudo + '(' + suffix + ')')) {
+        suffix++;
+    }
+    const real_pseudo = pseudo + '(' + suffix + ')';
+    socket.emit('pseudo validation', real_pseudo);
+}
+
 function tryAnswer(players, pseudo, answer) {
     if (answer === current_img.solution) {
         players.forEach(player => {
@@ -97,6 +120,10 @@ exports.handleEvents = function (io) {
                 score: 0
             });
             updateClients(players);
+        });
+
+        socket.on('ask pseudo', pseudo => {
+            checkPseudo(socket, players, pseudo);
         });
 
         socket.on('try answer', msg => {

@@ -78,7 +78,6 @@ function renderScores(scores) {
     let table_body = document.createElement("tbody");
 
     scores.forEach(row => {
-        console.log(row);
         let tr = document.createElement('tr');
         let td = document.createElement('td');
 
@@ -114,12 +113,14 @@ function renderGame(pseudo, socket) {
 
     var answer = document.getElementById('answer');
     answer.addEventListener('submit', function(e) {
-        var try_answer = document.getElementById('answer_player');
-        socket.emit('try answer', {
-        pseudo: pseudo,
-        answer: try_answer.value
-        });
-        try_answer.value = "";
+        var try_answer = document.getElementById('answer_player').value;
+        if (try_answer !== "") {
+            socket.emit('try answer', {
+                pseudo: pseudo,
+                answer: try_answer.value
+            });
+            try_answer.value = "";
+        }
     });
 
     var image, solution, iteration;
@@ -128,12 +129,10 @@ function renderGame(pseudo, socket) {
         solution = msg.solution;
         iteration = msg.iteration;
 
-        console.log("je reçois une image");
         renderImage(image, iteration);
     });
 
     socket.on('scores', function(msg) {
-        console.log("je reçois les scores");
         renderScores(msg);
     });
 }
