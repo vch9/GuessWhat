@@ -16,17 +16,21 @@
         <input type="text" class="fadeIn second" value="Choose your pseudo!" id="pseudonyme"/>
         <input type="submit" class="fadeIn third" value="Submit!"/>
       </form>
+      <script src="socket.io/socket.io.js"></script>
       <script>
         var form = document.getElementById('pseudo');
         form.addEventListener('submit', function(e) {
-            window.sessionStorage.pseudo = document.getElementById('pseudonyme').value;
-            e.preventDefault();
+          e.preventDefault();
+          let pseudo = document.getElementById('pseudonyme').value;
+          const socket = io();
 
+          socket.emit('ask pseudo', pseudo);
+          socket.on('pseudo validation', new_pseudo => {
+            window.sessionStorage.pseudo = new_pseudo;
             const url = window.location.href + 'game';
             window.location.href = url;
             window.location.replace(url);
-
-            // TODO: authorize only unique pseudonymes
+          });
         });
       </script>
     </div>
